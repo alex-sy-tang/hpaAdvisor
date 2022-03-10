@@ -1,0 +1,330 @@
+/* .discription p{
+  display:block;
+  width: 50%;
+} */
+
+body{
+  font-family:"Montserrat",sans-serif;
+}
+
+h1{
+  font-weight:bold;
+  font-size:3rem;
+}
+
+.bi-geo-alt, .bi-phone{
+  float:left;
+}
+
+.contact-i{
+  margin-right:1rem;
+  font-size:1.5;
+}
+
+.contact-information{
+  margin-top:3rem;
+}
+
+.f-title-right{
+  display:flex;
+  flex-direction: column;
+  align-items:center;
+}
+
+
+.food-image, .place-image{
+  width:40%;
+  border-radius:5%;
+}
+
+.form-control{
+  height:50px;
+  width:50%;
+  border-radius:25px;
+  font-family:sans-serif;
+}
+
+.feet{
+  padding:5% 10%;
+  color:grey;
+}
+
+.food-image{
+  float:right;
+}
+
+
+.search-bar{
+  clear:left;
+}
+
+.feet h3{
+  color:black;
+}
+
+.food,.place{
+  padding:5% 10%;
+  /* font-family:'Montserrat',sans-serif; */
+}
+
+.food-discription,.place-discription{
+  line-height: 2;
+  font-weight:100;
+  margin:3rem 0;
+}
+
+.food-title,.place-title{
+  font-weight:bold;
+}
+
+.food-info{
+  width:50%;
+  margin-right:auto;
+}
+
+.logo{
+  width:66%;
+}
+
+.nav-item{
+  margin: auto 3rem;
+}
+
+
+.place-info{
+  width:50%;
+  margin-left:auto;
+}
+
+
+.place-title{
+  display:block;
+}
+
+.place-image{
+  float:left;
+
+}
+
+.homepage{
+  text-align: center;
+  color:#fff;
+  background-image:url('image/campfire.jpg');
+  background-position: center;
+  background-size:1440px 700px;
+  padding:20%;
+}
+
+
+
+
+
+.social{
+  margin-top:50px;
+}
+
+.social-media{
+  margin:0 20px 0 0 ;
+}
+
+.title{
+  margin-bottom:3rem;
+}
+
+.user{
+  color:white;
+  font-size:1.5rem;
+}
+
+
+
+
+
+#dashboard .row{
+  width:20%;
+  margin:0 auto;
+}
+
+#dashboard .col-md-6{
+  display:flex;
+  flex-direction:column;
+  align-items: center;
+}
+
+#dashboard button{
+  border-bottom:solid;
+  border-radius:0;
+}
+
+
+
+#f-rec{
+  padding:7rem 7rem 4.5rem;
+}
+
+
+
+#f-rec .card-body{
+  color:#fff;
+  background-color:#EF6D6D;
+}
+
+#f-rec h3{
+  margin-bottom:3rem;
+}
+
+
+
+
+#f-shop{
+  padding:4.5rem 7rem 7rem;
+}
+
+#f-shop button{
+  margin:1rem 0;
+}
+
+#f-shop img{
+  width:90%;
+}
+
+#f-title{
+  background-color:#000;
+  color:#fff;
+  padding:15rem 7rem 12rem;
+  height:50rem;
+}
+#f-title button{
+  position:absolute;
+  bottom:12rem;
+}
+
+#f-title img{
+  width:80%;
+  border-radius:10px;
+}
+
+#f-title p{
+  width:60%;
+  margin:1rem 0;
+  line-height: 2;
+}
+
+#portfolio{
+  padding:10rem 0 4rem;
+}
+
+#portfolio button{
+  margin:1rem 0 0;
+}
+
+#portfolio .container{
+  display:flex;
+  flex-direction:column;
+  align-items: center;
+}
+
+#portfolio .col-md-6{
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+}
+
+
+
+#portfolio h3{
+  margin-top:2rem;
+}
+
+#portfolio h5{
+  color:grey;
+  font-family:sans-serif;
+  font-weight: 100;
+  margin:0 0 1rem 0;
+}
+
+#portfolio .row{
+  width:20%;
+  margin: 0 auto;
+}
+
+
+
+#t-experiences{
+  margin: 3rem 0 5rem 0;
+}
+
+#t-experiences .card {
+  margin:2rem 0 3rem 0;
+  border:none;
+
+}
+
+#t-experiences img{
+  height:18rem;
+  border-radius:3%;
+}
+
+#t-service{
+  padding:5rem 0;
+}
+
+#t-service .card{
+  margin-top:3rem;
+  height:38rem;
+  border-radius:3%;
+}
+
+#t-service img{
+  height:38rem;
+  border-radius:3%;
+}
+
+#t-service .card-img-overlay{
+  margin:4rem 0 0 4rem;
+}
+
+#t-service h3{
+  font-weight:bold;
+  margin:0 0 2rem;
+}
+
+
+
+#t-title{
+  background-color:#000;
+}
+
+
+#t-title .t-title-left{
+  background-color:#000;
+  padding:20rem 0;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  height:50rem;
+}
+
+#t-title h1{
+  color:#fff;
+  text-align:center;
+  width:70%;
+  line-height:1.5;
+}
+
+#t-title button{
+  margin:3rem;
+}
+
+
+#t-title .t-title-right{
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+}
+
+
+#t-title video{
+  max-height:50rem;
+  min-width:100%;
+}
