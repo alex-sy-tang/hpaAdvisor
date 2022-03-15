@@ -152,8 +152,13 @@ h1{
 }
 
 #dashboard button{
-  border-bottom:solid;
   border-radius:0;
+}
+
+.button-toggle{
+  border-bottom:solid;
+  border-bottom-color:red;
+  border-bottom-width:thick;
 }
 
 
@@ -162,11 +167,21 @@ h1{
   padding:7rem 7rem 4.5rem;
 }
 
+#f-rec .card{
+  border-radius:3%;
+}
+
+#f-rec .card-img-top{
+  border-top-left-radius: 3%;
+  border-top-right-radius: 3%;
+}
 
 
 #f-rec .card-body{
   color:#fff;
   background-color:#EF6D6D;
+  border-bottom-left-radius: 3%;
+  border-bottom-right-radius:3%;
 }
 
 #f-rec h3{
