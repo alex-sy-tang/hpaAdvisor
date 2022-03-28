@@ -12,5 +12,4 @@ $(document).ready(function(){
     $('#dashboard button').toggleClass('button-toggle');
     console.log(this);
   })
-
 })
