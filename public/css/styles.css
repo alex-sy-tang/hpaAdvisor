@@ -55,15 +55,14 @@ h1{
 
 .modal{
   position:absolute;
-
   pointer-events:none;
-
 }
 
 .modal .form-control{
-  border-radius:0;
+  border-radius:2px;
   width:100%;
   height:100%;
+
 
 }
 
@@ -152,7 +151,9 @@ h1{
 
 
 
-
+#community-area{
+  padding:7rem 7rem 4.5rem;
+}
 
 #dashboard .row{
   width:20%;

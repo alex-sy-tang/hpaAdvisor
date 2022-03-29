@@ -1,0 +1,19 @@
+<%-include('header')%>
+<section id = "community-area">
+  <div class="container">
+    <div class="row align-items-start">
+  <%usrContent.forEach(ele=>{%>
+        <div class="col-md-4">
+          <div class="card" style="width: 18rem;">
+            <img src="..." class="card-img-top" alt="...">
+            <div class="card-body">
+              <h5 class="card-title"><%=ele.title%></h5>
+              <p class="card-text"><%=ele.comment%></p>
+              <a href="#" class="btn btn-outline-danger">Read More</a>
+            </div>
+          </div>
+        </div>
+  <%})%>
+  </div>
+  </div>
+</section>
