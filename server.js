@@ -1,6 +1,8 @@
 const express = require('express')
 const bodyParser = require('body-parser')
 const mongoose = require('mongoose')
+const multer = require('multer')
+const upload = multer({dest:'./public/css/image/'})
 
 const app = express()
 app.use(bodyParser.urlencoded({extended:true}))
@@ -8,51 +10,44 @@ app.use(express.static('public'))
 app.set('view engine','ejs')
 
 
-const access = false
-
 
 main().catch(err => console.log(err));
 
 async function main() {
   await mongoose.connect('mongodb://localhost:27017/contentDB');
-
-
-  const contentSchema = new mongoose.Schema({
-    title:String,
-    comment:String,
-    imageUrl:String,
-  })
-
   const userSchema = new mongoose.Schema({
     usrName:{
       type:String,
-      required:true
+      required:true,
     },
     passWord:{
       type:String,
       required:true
     },
     profileUrl:String,
-    content:[contentSchema]
+
+  })
+
+
+  const contentSchema = new mongoose.Schema({
+    title:String,
+    comment:String,
+    imageUrl:String,
+    liked:Number
+  })
+
+  const mainSchema = new mongoose.Schema({
+    content:[contentSchema],
+    user:[userSchema]
   })
 
 
 
-  // const userSchema = new mongoose.Schema({
-  //   usrName:{
-  //     type:String,
-  //     required:true
-  //   },
-  //   passWord:{
-  //     type:String,
-  //     required:true
-  //   },
-  //   profileImage:String,
-  // })
-
 
   const Content = mongoose.model('Content',contentSchema)
   const User = mongoose.model('User',userSchema)
+  const Main = mongoose.model('Main',mainSchema)
+
   app.listen('3000',()=>{
     console.log('The server is set up and running on port 3000')
   })
@@ -67,31 +62,55 @@ async function main() {
     const logIn = req.body.logIn
     const signUp = req.body.signUp
 
-
       User.findOne({usrName:usrName},(err,result)=>{
         if(err){
           console.log('err')
         }else{
           if(! result){
-            const newUser = new User({
-              usrName:usrName,
-              passWord:password
-            })
-            newUser.save()
-            res.redirect('/')
-            access = true
+            res.redirect('/signup')
           }else{
-            res.redirect('/')
-            access = true
+            if(result.usrName === usrName && result.passWord === password){
+              res.redirect('/')
+            }else{
+              console.log('Your user name is wrong')
+              res.redirect('/portal')
+            }
+
           }
         }
       })
-
   })
 
-  app.get('/',(req,res)=>{
-    res.render('index')
+  app.get('/signup',(req,res)=>{
+    res.render('signup')
   })
+
+  app.post('/signup',(req,res)=>{
+    const usrName = req.body.usrName
+    const password = req.body.password
+    const signUp = req.body.signUp
+
+    User.findOne({usrName:usrName},(err,result)=>{
+      if(! result){
+        const newUser = new User({
+          usrName:usrName,
+          passWord:password
+        })
+        newUser.save()
+        const newInfo = new Main({
+          content:[],
+          user:[newUser]
+        })
+        console.log('Your Account has been successfully set up.')
+        res.redirect('/')
+        account = usrName
+      }else{
+        console.log('The user name has been created. Please Sign Up for another one.')
+        res.redirect('/signup')
+      }
+    })
+  })
+
 
 
 
@@ -107,23 +126,24 @@ async function main() {
     res.render('yours')
   })
 
-  app.get('/community',(req,res)=>{
+  app.get('/',(req,res)=>{
     Content.find({},(err,docs)=>{
       if(err){
-        console.log(err)
+        console.log(err);
       }else{
-        res.render('community',{usrContent:docs})
+        res.render('community',{usrContent:docs});
       }
     })
-
   })
 
-  app.post('/community',(req,res)=>{
+  app.post('/',upload.single('image'),(req,res,next)=>{
     const title = req.body.title
     const comments = req.body.comments
-    const imageUrl = req.body.image
-    const userContent = new Content({title:title,comment:comments,imageUrl:__dirname+imageUrl})
+    const imageUrl = req.file.path.slice(6)
+    console.log(imageUrl);
+    const userContent = new Content({title:title,comment:comments,imageUrl:imageUrl})
     userContent.save()
-    res.redirect('/community')
+
+    res.redirect('/')
   })
 }

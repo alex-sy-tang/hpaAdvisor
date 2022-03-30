@@ -4,7 +4,7 @@
     <section id = "portfolio">
       <div class="container">
         <img src="" alt="portfolio">
-        <h3>User Name</h3>
+        <h3> UserName</h3>
         <h5>account number</h5>
       </div>
       <div class="buttons">
@@ -40,11 +40,14 @@
             <h5 class="modal-title" id="exampleModalLabel">New Post</h5>
             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
           </div>
-          <form action = "/community" method = "post" id = "usrForm">
+
         <div class="modal-body">
-             <div class = "mb-3">
-                 <input class = "form-control" type = "file" name = "image">
-            </div>
+
+
+          <form action = "/" method = "post" id = "usrForm" enctype="multipart/form-data">
+            <div class = "mb-3">
+                <input class = "form-control" type = "file" name = "image">
+           </div>
             <div class = "mb-3">
                 <label class = "col-form-label" for = "title">Title</label>
                 <input class = "form-control" type = "text" name = "title">
@@ -61,6 +64,9 @@
 
         </div>
       </div>
+
+
+
 
 
     <!-- <section id = "dashboard">
