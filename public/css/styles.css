@@ -119,6 +119,12 @@ h1{
 
 }
 
+/* .posts{
+  width:200px;
+  height:200px;
+  object-fit:cover;
+} */
+
 .homepage{
   text-align: center;
   color:#fff;
@@ -154,6 +160,32 @@ h1{
 #community-area{
   padding:7rem 7rem 4.5rem;
 }
+
+#community-area .card{
+  margin:auto;
+  border-radius:10px;
+}
+
+#community-area .posts{
+  width:250px;
+  height:250px;
+  object-fit:cover;
+  margin:auto;
+  /* border-top-left-radius:5px;
+  border-top-right-radius:5px; */
+
+}
+
+#community-area .comment{
+  font-family:'Montserrat',sans-serif;
+  color:#808080;
+  font-size:0.8rem;
+  font-weight:lighter;
+}
+
+/* #community-area .card-body{
+
+} */
 
 #dashboard .row{
   width:20%;

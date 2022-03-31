@@ -2,8 +2,9 @@ const express = require('express')
 const bodyParser = require('body-parser')
 const mongoose = require('mongoose')
 const multer = require('multer')
-const upload = multer({dest:'./public/css/image/'})
 
+
+const upload = multer({dest:'./public/css/image/'})
 const app = express()
 app.use(bodyParser.urlencoded({extended:true}))
 app.use(express.static('public'))
@@ -131,7 +132,14 @@ async function main() {
       if(err){
         console.log(err);
       }else{
-        res.render('community',{usrContent:docs});
+        let reverseDocs = []
+        for(var i = 0;i < docs.length;i++){
+          let ele = docs[docs.length-1-i]
+          reverseDocs.push(ele);
+
+        }
+
+        res.render('community',{usrContent:reverseDocs});
       }
     })
   })
@@ -139,11 +147,42 @@ async function main() {
   app.post('/',upload.single('image'),(req,res,next)=>{
     const title = req.body.title
     const comments = req.body.comments
-    const imageUrl = req.file.path.slice(6)
-    console.log(imageUrl);
-    const userContent = new Content({title:title,comment:comments,imageUrl:imageUrl})
-    userContent.save()
+    console.log(req.file)
+    let imageUrl = ''
 
+
+
+    if(! req.file){
+      imageUrl = 'css/image/food1.png'
+    }else{
+      imageUrl = req.file.path.slice(6)
+    }
+
+    // const image = req.file.path.slice(6)
+
+
+
+    const userContent = new Content({title:countString(title,25),comment:countString(comments,30),imageUrl:imageUrl})
+    userContent.save()
     res.redirect('/')
   })
+}
+
+let countString = (text,number)=>{
+  if (text.length >= number){
+    let abbr = text.slice(0,number) + " ..."
+    return abbr
+  }else{
+    let abbr =text
+    return abbr
+  }
+}
+
+let reverse = (oldArray,newArray)=>{
+  let reverseDocs = []
+  for(var i = 0;i<oldArray.length;i++){
+    let ele = oldArray[oldArray.length-1-i]
+    reverseDocs = newArray.push(ele)
+  }
+  return reverseDocs
 }
