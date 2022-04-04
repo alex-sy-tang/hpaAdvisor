@@ -1,7 +1,10 @@
-const express = require('express')
-const bodyParser = require('body-parser')
-const mongoose = require('mongoose')
-const multer = require('multer')
+const express = require('express');
+const bodyParser = require('body-parser');
+const mongoose = require('mongoose');
+const multer = require('multer');
+const session = require('express-session');
+const passport = require('passport');
+const passportLocalMongoose = require('passport-local-mongoose');
 
 
 const upload = multer({dest:'./public/css/image/'})
@@ -9,6 +12,14 @@ const app = express()
 app.use(bodyParser.urlencoded({extended:true}))
 app.use(express.static('public'))
 app.set('view engine','ejs')
+app.use(session({
+  secret: 'Hello',
+  resave: false,
+  saveUninitialized: false,
+}))
+
+app.use(passport.initialize());
+app.use(passport.session());
 
 
 
@@ -16,115 +27,111 @@ main().catch(err => console.log(err));
 
 async function main() {
   await mongoose.connect('mongodb://localhost:27017/contentDB');
-  const userSchema = new mongoose.Schema({
-    usrName:{
-      type:String,
-      required:true,
-    },
-    passWord:{
-      type:String,
-      required:true
-    },
-    profileUrl:String,
 
-  })
 
 
   const contentSchema = new mongoose.Schema({
+    user:String,
     title:String,
     comment:String,
     imageUrl:String,
     liked:Number
   })
 
-  const mainSchema = new mongoose.Schema({
-    content:[contentSchema],
-    user:[userSchema]
+  const userSchema = new mongoose.Schema({
+    username:{
+      type:String,
+      required:true,
+    },
+    password:String,
+    profileUrl:String,
+    content:[contentSchema]
   })
 
-
+  userSchema.plugin(passportLocalMongoose);
 
 
   const Content = mongoose.model('Content',contentSchema)
-  const User = mongoose.model('User',userSchema)
-  const Main = mongoose.model('Main',mainSchema)
+  const User = new mongoose.model('User',userSchema)
+  // const Main = mongoose.model('Main',mainSchema)
+
+  passport.use(User.createStrategy());
+  passport.serializeUser(User.serializeUser());
+  passport.deserializeUser(User.deserializeUser());
+
 
   app.listen('3000',()=>{
     console.log('The server is set up and running on port 3000')
   })
 
-  app.get('/portal',(req,res)=>{
-    res.render('portal')
+  app.get('/login',(req,res)=>{
+    res.render('login');
   })
 
-  app.post('/portal',(req,res)=>{
-    const usrName = req.body.usrName
-    const password = req.body.password
-    const logIn = req.body.logIn
-    const signUp = req.body.signUp
+  app.post('/login',(req,res)=>{
 
-      User.findOne({usrName:usrName},(err,result)=>{
-        if(err){
-          console.log('err')
-        }else{
-          if(! result){
-            res.redirect('/signup')
-          }else{
-            if(result.usrName === usrName && result.passWord === password){
-              res.redirect('/')
-            }else{
-              console.log('Your user name is wrong')
-              res.redirect('/portal')
-            }
-
-          }
-        }
-      })
+    const user = new User({
+    username:req.body.username,
+    password:req.body.password,
   })
+
+  req.login(user,(err)=>{
+    if(err){
+      console.log(err);
+      res.redirect('/login')
+    }
+    passport.authenticate('local')(req,res,()=>{
+      res.redirect('/yours');
+    })
+  })
+
+})
 
   app.get('/signup',(req,res)=>{
     res.render('signup')
   })
 
   app.post('/signup',(req,res)=>{
-    const usrName = req.body.usrName
+    const username = req.body.username
     const password = req.body.password
-    const signUp = req.body.signUp
+    // const signUp = req.body.signUp
 
-    User.findOne({usrName:usrName},(err,result)=>{
-      if(! result){
-        const newUser = new User({
-          usrName:usrName,
-          passWord:password
-        })
-        newUser.save()
-        const newInfo = new Main({
-          content:[],
-          user:[newUser]
-        })
-        console.log('Your Account has been successfully set up.')
-        res.redirect('/')
-        account = usrName
-      }else{
-        console.log('The user name has been created. Please Sign Up for another one.')
-        res.redirect('/signup')
-      }
+    User.register({username:username,active:true},password,(err,user)=>{
+    if(err){
+      console.log(err)
+      res.redirect('/signup')
+    }else{
+      const authenticate = passport.authenticate('local');
+
+    //I didn't quite understand the part about authentication.
+    authenticate(req,res,()=>{
+      res.redirect('/yours');
     })
+    }
+  })
   })
 
-
-
-
-  app.get('/food',(req,res)=>{
-    res.render('food')
-  })
-
-  app.get('/trip',(req,res)=>{
-    res.render('trip')
-  })
 
   app.get('/yours',(req,res)=>{
-    res.render('yours')
+    if(req.isAuthenticated()){
+      Content.find({user:req.user.username},(err,docs)=>{
+        if(err){
+          console.log(err)
+        }else{
+          let reverseDocs = []
+          for(var i = 0;i < docs.length;i++){
+            let ele = docs[docs.length-1-i]
+            reverseDocs.push(ele);
+          }
+          res.render('yours',{usrContent:reverseDocs});
+          console.log(reverseDocs);
+        }
+        // res.render('yours');
+      })
+
+    }else{
+      res.redirect('/login')
+    }
   })
 
   app.get('/',(req,res)=>{
@@ -136,21 +143,18 @@ async function main() {
         for(var i = 0;i < docs.length;i++){
           let ele = docs[docs.length-1-i]
           reverseDocs.push(ele);
-
         }
-
         res.render('community',{usrContent:reverseDocs});
       }
     })
   })
 
   app.post('/',upload.single('image'),(req,res,next)=>{
+
     const title = req.body.title
     const comments = req.body.comments
-    console.log(req.file)
+    // console.log(req.user)
     let imageUrl = ''
-
-
 
     if(! req.file){
       imageUrl = 'css/image/food1.png'
@@ -158,22 +162,24 @@ async function main() {
       imageUrl = req.file.path.slice(6)
     }
 
-    // const image = req.file.path.slice(6)
-
-
-
-    const userContent = new Content({title:countString(title,25),comment:countString(comments,30),imageUrl:imageUrl})
+    const userContent = new Content({user:req.user.username,title:countString(title,25),comment:countString(comments,30),imageUrl:imageUrl})
     userContent.save()
     res.redirect('/')
   })
+
 }
+
+
 
 let countString = (text,number)=>{
   if (text.length >= number){
     let abbr = text.slice(0,number) + " ..."
     return abbr
+  }else if(text.length == 0){
+    let abbr = 'No Information'
+    return abbr
   }else{
-    let abbr =text
+    let abbr = text
     return abbr
   }
 }

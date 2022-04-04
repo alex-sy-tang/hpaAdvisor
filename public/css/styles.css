@@ -157,16 +157,16 @@ h1{
 
 
 
-#community-area{
+#community-area, #your-posts{
   padding:7rem 7rem 4.5rem;
 }
 
-#community-area .card{
+#community-area .card, #your-posts .card{
   margin:auto;
   border-radius:10px;
 }
 
-#community-area .posts{
+#community-area .posts, #your-posts .post{
   width:250px;
   height:250px;
   object-fit:cover;
@@ -176,7 +176,7 @@ h1{
 
 }
 
-#community-area .comment{
+#community-area .comment, #your-posts .comment{
   font-family:'Montserrat',sans-serif;
   color:#808080;
   font-size:0.8rem;
