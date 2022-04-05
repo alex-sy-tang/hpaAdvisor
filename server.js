@@ -28,14 +28,21 @@ main().catch(err => console.log(err));
 async function main() {
   await mongoose.connect('mongodb://localhost:27017/contentDB');
 
-
-
   const contentSchema = new mongoose.Schema({
     user:String,
     title:String,
     comment:String,
     imageUrl:String,
-    liked:Number
+    liked:Number,
+    saved:Boolean,
+  })
+
+  const savedSchema = new mongoose.Schema({
+    user:String,
+    title:String,
+    comment:String,
+    imageUrl:String,
+    liked: Number,
   })
 
   const userSchema = new mongoose.Schema({
@@ -48,11 +55,13 @@ async function main() {
     content:[contentSchema]
   })
 
+
   userSchema.plugin(passportLocalMongoose);
 
 
-  const Content = mongoose.model('Content',contentSchema)
-  const User = new mongoose.model('User',userSchema)
+  const Content = mongoose.model('Content',contentSchema);
+  const Saved = mongoose.model('Saved',savedSchema);
+  const User = new mongoose.model('User',userSchema);
   // const Main = mongoose.model('Main',mainSchema)
 
   passport.use(User.createStrategy());
@@ -123,16 +132,77 @@ async function main() {
             let ele = docs[docs.length-1-i]
             reverseDocs.push(ele);
           }
-          res.render('yours',{usrContent:reverseDocs});
-          console.log(reverseDocs);
+          res.render('yours',{usrContent:reverseDocs,user:req.user.username});
+
         }
-        // res.render('yours');
       })
 
     }else{
-      res.redirect('/login')
+      res.redirect('/login');
     }
   })
+
+  app.post('/yours',(req,res)=>{
+    let direction = req.body.button
+    console.log(direction)
+    if(req.body.button==="shared"){
+      res.redirect('/shared');
+    }else{
+      res.redirect('/saved');
+    }
+
+
+  })
+
+
+
+  app.get('/:id',(req,res)=>{
+    let param = req.params.id
+    if(param === 'shared'){
+      if(req.isAuthenticated()){
+        Content.find({user:req.user.username},(err,docs)=>{
+          if(err){
+            console.log(err)
+          }else{
+            let reverseDocs = []
+            for(var i = 0;i < docs.length;i++){
+              let ele = docs[docs.length-1-i]
+              reverseDocs.push(ele);
+            }
+            res.render('yours',{usrContent:reverseDocs});
+
+          }
+        })
+
+      }else{
+        res.redirect('/login');
+      }
+      }
+    if(param === 'saved'){
+      if(req.isAuthenticated()){
+        Saved.find({user:req.user.username},(err,docs)=>{
+          if(err){
+            console.log(err)
+          }else{
+            let reverseDocs = []
+            for(var i = 0;i < docs.length;i++){
+              let ele = docs[docs.length-1-i]
+              reverseDocs.push(ele);
+            }
+            res.render('yours',{usrContent:reverseDocs});
+
+          }
+        })
+
+      }else{
+        res.redirect('/login');
+      }
+    }
+  })
+
+
+
+
 
   app.get('/',(req,res)=>{
     Content.find({},(err,docs)=>{
@@ -148,6 +218,7 @@ async function main() {
       }
     })
   })
+
 
   app.post('/',upload.single('image'),(req,res,next)=>{
 
@@ -183,6 +254,7 @@ let countString = (text,number)=>{
     return abbr
   }
 }
+
 
 let reverse = (oldArray,newArray)=>{
   let reverseDocs = []

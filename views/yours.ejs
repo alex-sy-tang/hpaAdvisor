@@ -4,8 +4,8 @@
     <section id = "portfolio">
       <div class="container">
         <img src="" alt="portfolio">
-        <h3> UserName</h3>
-        <h5>account number</h5>
+        <h3> Hello!</h3>
+        <h5><%= user%></h5>
       </div>
       <div class="buttons">
         <div class="row">
@@ -21,16 +21,19 @@
     </section>
 
     <section id = "dashboard">
-      <div class="container">
-        <div class="row">
-          <div class="col-md-6">
-            <button class = "button-toggle btn"type="button" name="button">Shared</button>
+      <form class="" action="/yours" method="post">
+        <div class="container">
+          <div class="row">
+            <div class="col-md-6">
+              <button class = "btn"type="submit" name="button" value = "shared" > Shared</button>
+            </div>
+            <div class="col-md-6">
+              <button class = " btn"type="submit" name="button" value = "saved" > Saved </button>
+            </div>
           </div>
-          <div class="col-md-6">
-            <button class = " btn"type="button" name="button">Saved</button>
           </div>
-        </div>
-        </div>
+      </form>
+
     </section>
 
     <section id = "your-posts">
