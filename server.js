@@ -5,12 +5,13 @@ const multer = require('multer');
 const session = require('express-session');
 const passport = require('passport');
 const passportLocalMongoose = require('passport-local-mongoose');
+const bson = require('bson');
 
 
 const upload = multer({dest:'./public/css/image/'})
 const app = express()
 app.use(bodyParser.urlencoded({extended:true}))
-app.use(express.static('public'))
+app.use(express.static(__dirname+'/public'))
 app.set('view engine','ejs')
 app.use(session({
   secret: 'Hello',
@@ -29,6 +30,10 @@ async function main() {
   await mongoose.connect('mongodb://localhost:27017/contentDB');
 
   const contentSchema = new mongoose.Schema({
+    _id:{
+      type:String,
+      required:true,
+    },
     user:String,
     title:String,
     comment:String,
@@ -38,6 +43,10 @@ async function main() {
   })
 
   const savedSchema = new mongoose.Schema({
+    _id:{
+      type:String,
+      required:true,
+    },
     user:String,
     title:String,
     comment:String,
@@ -169,7 +178,7 @@ async function main() {
               let ele = docs[docs.length-1-i]
               reverseDocs.push(ele);
             }
-            res.render('yours',{usrContent:reverseDocs});
+            res.render('yours',{usrContent:reverseDocs,user:req.user.username});
 
           }
         })
@@ -189,11 +198,9 @@ async function main() {
               let ele = docs[docs.length-1-i]
               reverseDocs.push(ele);
             }
-            res.render('yours',{usrContent:reverseDocs});
-
+            res.render('yours',{usrContent:reverseDocs,user:req.user.username});
           }
         })
-
       }else{
         res.redirect('/login');
       }
@@ -201,6 +208,24 @@ async function main() {
   })
 
 
+
+app.post('/community',(req,res)=>{
+  console.log(req.body.more);
+  res.redirect('/community/'+req.body.more);
+})
+
+app.get('/community/:id',(req,res)=>{
+  console.log(req.params.id);
+  Content.findOne({_id:req.params.id},(err,result)=>{
+    if(err){
+      console.log(err);
+    }
+    res.render('more',{usrContent:result});
+  });
+
+
+
+})
 
 
 
@@ -220,6 +245,7 @@ async function main() {
   })
 
 
+
   app.post('/',upload.single('image'),(req,res,next)=>{
 
     const title = req.body.title
@@ -232,8 +258,8 @@ async function main() {
     }else{
       imageUrl = req.file.path.slice(6)
     }
-
-    const userContent = new Content({user:req.user.username,title:countString(title,25),comment:countString(comments,30),imageUrl:imageUrl})
+    let id = new mongoose.Types.ObjectId();
+    const userContent = new Content({_id:id,user:req.user.username,title:countString(title,25),comment:countString(comments,30),imageUrl:imageUrl})
     userContent.save()
     res.redirect('/')
   })
@@ -241,6 +267,8 @@ async function main() {
 }
 
 
+
+// Those are external functions.
 
 let countString = (text,number)=>{
   if (text.length >= number){
