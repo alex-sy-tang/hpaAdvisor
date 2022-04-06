@@ -6,8 +6,12 @@
       <div class="image col-md-4">
 
         <img src="/<%=usrContent.imageUrl%>" alt="A random image">
-          <a type="button" class = "save" name="button"><i class="bi bi-bookmark-fill"></i></a>
-
+        <form class="" id = "bookmark" action="/more" method="post">
+            <a type = "submit "onclick = "myFunction()" class = "save" name="button">
+              <i class="save bi bi-bookmark-fill"></i>
+            </a>
+            <input type="hidden" name="save" value= "<%=usrContent._id%>" >
+        </form>
       </div>
       <div class="content col-md-8">
         <div class="container">
@@ -18,6 +22,11 @@
     </div>
   </div>
 </section>
+<script>
+           function myFunction() {
+               document.getElementById("bookmark").submit();
+           }
+</script>
 
 
 <%- include('footer')%>

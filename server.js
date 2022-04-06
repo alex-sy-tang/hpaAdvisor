@@ -54,6 +54,7 @@ async function main() {
     imageUrl:String,
     liked: Number,
     abbr:String,
+    saved:Boolean,
   })
 
   const userSchema = new mongoose.Schema({
@@ -84,6 +85,8 @@ async function main() {
     console.log('The server is set up and running on port 3000')
   })
 
+
+
   app.get('/login',(req,res)=>{
     res.render('login');
   })
@@ -104,7 +107,11 @@ async function main() {
       res.redirect('/yours');
     })
   })
+})
 
+app.post('/logout',(req,res)=>{
+  req.logout();
+  res.redirect('/');
 })
 
   app.get('/signup',(req,res)=>{
@@ -226,8 +233,24 @@ app.get('/community/:id',(req,res)=>{
     res.render('more',{usrContent:result});
   });
 
+})
 
+app.post('/more',(req,res)=>{
 
+  if(req.isAuthenticated()){
+    res.redirect('/community/'+req.body.save);
+    Content.findOne({_id:req.body.save},(err,result)=>{
+      if(err){
+        console.log(err);
+      }else{
+        console.log(req.user)
+        const newSaved = new Saved({_id:req.body.save,user:req.user.username,title:countString(result.title,25),comment:result.comment,imageUrl:result.imageUrl});
+        newSaved.save();
+      }
+    })
+  }else{
+    res.redirect('/login');
+  }
 })
 
 
