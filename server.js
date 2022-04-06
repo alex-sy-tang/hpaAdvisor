@@ -39,7 +39,8 @@ async function main() {
     comment:String,
     imageUrl:String,
     liked:Number,
-    saved:Boolean,
+    abbr:String,
+
   })
 
   const savedSchema = new mongoose.Schema({
@@ -52,6 +53,7 @@ async function main() {
     comment:String,
     imageUrl:String,
     liked: Number,
+    abbr:String,
   })
 
   const userSchema = new mongoose.Schema({
@@ -153,13 +155,14 @@ async function main() {
 
   app.post('/yours',(req,res)=>{
     let direction = req.body.button
+    let more = req.body.more
     console.log(direction)
     if(req.body.button==="shared"){
       res.redirect('/shared');
-    }else{
-      res.redirect('/saved');
     }
-
+    if(req.body.button === "saved"){
+      res.redirect('/saved')
+    }
 
   })
 
@@ -210,12 +213,12 @@ async function main() {
 
 
 app.post('/community',(req,res)=>{
-  console.log(req.body.more);
+
   res.redirect('/community/'+req.body.more);
 })
 
 app.get('/community/:id',(req,res)=>{
-  console.log(req.params.id);
+
   Content.findOne({_id:req.params.id},(err,result)=>{
     if(err){
       console.log(err);
@@ -250,7 +253,7 @@ app.get('/community/:id',(req,res)=>{
 
     const title = req.body.title
     const comments = req.body.comments
-    // console.log(req.user)
+
     let imageUrl = ''
 
     if(! req.file){
@@ -259,7 +262,7 @@ app.get('/community/:id',(req,res)=>{
       imageUrl = req.file.path.slice(6)
     }
     let id = new mongoose.Types.ObjectId();
-    const userContent = new Content({_id:id,user:req.user.username,title:countString(title,25),comment:countString(comments,30),imageUrl:imageUrl})
+    const userContent = new Content({_id:id,user:req.user.username,title:countString(title,25),comment:comments,imageUrl:imageUrl})
     userContent.save()
     res.redirect('/')
   })
@@ -268,7 +271,7 @@ app.get('/community/:id',(req,res)=>{
 
 
 
-// Those are external functions.
+
 
 let countString = (text,number)=>{
   if (text.length >= number){

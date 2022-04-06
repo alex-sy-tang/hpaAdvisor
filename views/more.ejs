@@ -4,11 +4,16 @@
   <div class="container-fluid">
     <div class="row align-items-start">
       <div class="image col-md-4">
+
         <img src="/<%=usrContent.imageUrl%>" alt="A random image">
+          <a type="button" class = "save" name="button"><i class="bi bi-bookmark-fill"></i></a>
+
       </div>
       <div class="content col-md-8">
-        <h5><%=usrContent.title%></h5>
-        <p><%= usrContent.comment%></p>
+        <div class="container">
+          <h5><%=usrContent.title%></h5>
+          <p><%= usrContent.comment%></p>
+        </div>
       </div>
     </div>
   </div>

@@ -184,20 +184,36 @@ h1{
 }
 
 #more .container-fluid{
-  width:1150px;
-  height:500px;
+  width:75%;
+  height:80%;
   margin:10%;
-  border-radius:10px;
   box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+  border-radius:15px;
   padding:5rem;
+
+}
+
+#more .container{
+
+  width:600px;
+  height:500px;
+  margin:auto;
   overflow:scroll;
 }
 
+#more .save{
+  font-size:3rem;
+  color:black;
 
+}
+
+.clicked{
+  color:red;
+}
 
 #more img{
-  width:18rem;
-  height:18rem;
+  width:20rem;
+  height:20rem;
   object-fit:cover;
 
 }

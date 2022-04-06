@@ -5,10 +5,11 @@
   <%usrContent.forEach(ele=>{%>
         <div class="col-md-4">
           <div class="card mb-5" style="width: 18rem;">
+
             <img src="<%=ele.imageUrl %>" class="card-img-top posts" alt="...">
+
             <div class="card-body">
               <h5 class="card-title"><%=ele.title%></h5>
-              <p class="card-text comment"><%=ele.comment%></p>
               <form class="" action="/community" method="post">
                 <button type="submit" class="btn btn-danger" name = "more" value = "<%=ele._id%>">Read More</button>
               </form>

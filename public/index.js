@@ -8,8 +8,14 @@ $(document).ready(function(){
       $(".navbar").removeClass('bg-light').addClass('bg-dark');
     }
   })
-  $("#dashboard button").click(function(event){
-    $('#dashboard button').toggleClass('button-toggle');
-    console.log(this);
-  })
+
+})
+
+$("#dashboard button").click(function(event){
+  $('#dashboard button').toggleClass('button-toggle');
+  console.log(this);
+})
+$("#more .saved").click(function(event){
+  $("more .saved").toggleClass('clicked');
+  console.log(this);
 })
