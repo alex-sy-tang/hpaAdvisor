@@ -48,6 +48,7 @@ async function main() {
     user:String,
     title:String,
     comment:String,
+    yourself:String,
     imageUrl:String,
     liked:Number,
     abbr:String,
@@ -62,6 +63,7 @@ async function main() {
     user:String,
     title:String,
     comment:String,
+    yourself:String,
     imageUrl:String,
     liked: Number,
     abbr:String,
@@ -314,7 +316,8 @@ app.post('/more',(req,res)=>{
       if(err){
         console.log(err)
       }else{
-        res.redirect('/account',{usrContent:result});
+        console.log(result);
+        res.render('account',{usrContent:result});
       }
     })
   })
@@ -324,7 +327,7 @@ app.post('/more',(req,res)=>{
 
     const title = req.body.title
     const comments = req.body.comments
-
+    const yourself = req.body.yourself
 
 
     let imageUrl = ''
@@ -336,7 +339,7 @@ app.post('/more',(req,res)=>{
 
     }
     let id = new mongoose.Types.ObjectId();
-    const userContent = new Content({_id:id,user:req.user.username,title:countString(title,25),comment:comments,imageUrl:imageUrl})
+    const userContent = new Content({_id:id,user:req.user.username,title:countString(title,25),comment:comments,yourself:yourself,imageUrl:imageUrl})
     userContent.save()
     res.redirect('/')
   })
