@@ -30,15 +30,7 @@ async function main() {
   await mongoose.connect('mongodb://localhost:27017/contentDB');
 
 
-  const userSchema = new mongoose.Schema({
-    username:{
-      type:String,
-      required:true,
-    },
-    password:String,
-    profileUrl:String,
 
-  })
 
   const contentSchema = new mongoose.Schema({
     _id:{
@@ -68,6 +60,15 @@ async function main() {
     liked: Number,
     abbr:String,
     saved:Boolean,
+  })
+
+  const userSchema = new mongoose.Schema({
+    username:{
+      type:String,
+      required:true,
+    },
+    password:String,
+    profileUrl:String,
   })
 
   // const userSchema = new mongoose.Schema({
@@ -154,19 +155,21 @@ app.post('/logout',(req,res)=>{
 
   app.get('/yours',(req,res)=>{
     if(req.isAuthenticated()){
+      let reverseDocs = []
       Content.find({user:req.user.username},(err,docs)=>{
         if(err){
           console.log(err)
         }else{
-          let reverseDocs = []
+          // let reverseDocs = []
           for(var i = 0;i < docs.length;i++){
             let ele = docs[docs.length-1-i]
             reverseDocs.push(ele);
           }
           res.render('yours',{usrContent:reverseDocs,user:req.user.username});
-
         }
       })
+
+      // res.render('yours',{usrContent:reverseDocs,user:req.user.username});
 
     }else{
       res.redirect('/login');
