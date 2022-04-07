@@ -29,6 +29,17 @@ main().catch(err => console.log(err));
 async function main() {
   await mongoose.connect('mongodb://localhost:27017/contentDB');
 
+
+  const userSchema = new mongoose.Schema({
+    username:{
+      type:String,
+      required:true,
+    },
+    password:String,
+    profileUrl:String,
+
+  })
+
   const contentSchema = new mongoose.Schema({
     _id:{
       type:String,
@@ -57,15 +68,15 @@ async function main() {
     saved:Boolean,
   })
 
-  const userSchema = new mongoose.Schema({
-    username:{
-      type:String,
-      required:true,
-    },
-    password:String,
-    profileUrl:String,
-    content:[contentSchema]
-  })
+  // const userSchema = new mongoose.Schema({
+  //   username:{
+  //     type:String,
+  //     required:true,
+  //   },
+  //   password:String,
+  //   profileUrl:String,
+  //
+  // })
 
 
   userSchema.plugin(passportLocalMongoose);
@@ -170,7 +181,27 @@ app.post('/logout',(req,res)=>{
     if(req.body.button === "saved"){
       res.redirect('/saved')
     }
+  })
 
+
+  app.get('/account',(req,res)=>{
+    if(req.isAuthenticated()){
+      User.findOne({username:req.user.username},(err,result)=>{
+        if(err){
+          console.log(err);
+        }else{
+          res.render('account',{usrContent:result});
+        }
+      })
+    }else{
+      res.redirect('/login');
+    }
+  })
+
+
+
+  app.post('/account',(req,res)=>{
+    res.redirect('account');
   })
 
 
@@ -270,6 +301,23 @@ app.post('/more',(req,res)=>{
     })
   })
 
+  app.post('/pImage',upload.single('image'),(req,res,next)=>{
+    console.log(req.body);
+    console.log(req.file);
+    let profileUrl = ''
+    if(!req.file){
+      profileUrl = '/css/image/user.png';
+    }else{
+      profileUrl = req.file.path.slice(6);
+    }
+    User.findOneAndUpdate({username:req.user.username},{profileUrl:profileUrl},(err,result)=>{
+      if(err){
+        console.log(err)
+      }else{
+        res.redirect('/account',{usrContent:result});
+      }
+    })
+  })
 
 
   app.post('/',upload.single('image'),(req,res,next)=>{
@@ -277,12 +325,15 @@ app.post('/more',(req,res)=>{
     const title = req.body.title
     const comments = req.body.comments
 
+
+
     let imageUrl = ''
 
     if(! req.file){
-      imageUrl = 'css/image/food1.png'
+      imageUrl = '/css/image/food1.png'
     }else{
       imageUrl = req.file.path.slice(6)
+
     }
     let id = new mongoose.Types.ObjectId();
     const userContent = new Content({_id:id,user:req.user.username,title:countString(title,25),comment:comments,imageUrl:imageUrl})

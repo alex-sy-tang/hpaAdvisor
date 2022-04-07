@@ -140,9 +140,20 @@ h1{
   font-size:1.5rem;
 }
 
+#account img{
+  width:20rem;
+  height:20rem;
+  object-fit:cover;
+}
+
+#account .btn{
+  display:block;
+  margin-top:20px;
+}
 
 
-#community-area, #your-posts{
+
+#community-area, #your-posts, #account{
   padding:7rem 7rem 4.5rem;
 }
 
@@ -203,7 +214,7 @@ h1{
 
 #more .save{
   font-size:3rem;
-  
+
 
 }
 
@@ -240,6 +251,12 @@ h1{
   align-items:center;
 }
 
+#portfolio .userImg{
+  width:50px;
+  height:50px;
+  object-fit:cover;
+}
+
 
 
 #portfolio h3{
@@ -256,4 +273,9 @@ h1{
 #portfolio .row{
   width:20%;
   margin: 0 auto;
+}
+
+#your-posts .add{
+  border-radius:100%;
+  font-weight:bolder;
 }
