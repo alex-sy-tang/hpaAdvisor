@@ -2,9 +2,12 @@
 <section id = "community-area">
   <div class="container">
     <div class="row align-items-start">
+
+
   <%usrContent.forEach(ele=>{%>
         <div class="col-md-4">
           <div class="card mb-5" style="width: 18rem;">
+
 
             <img src="<%=ele.imageUrl %>" class="card-img-top posts" alt="...">
 
@@ -17,6 +20,11 @@
           </div>
         </div>
   <%})%>
+  <% if(usrContent.length <=3){%>
+    <div class="filler">
+
+    </div>
+  <%}%>
   </div>
   </div>
 </section>

@@ -125,7 +125,7 @@ async function main() {
 
 app.post('/logout',(req,res)=>{
   req.logout();
-  res.redirect('/');
+  res.redirect('/login');
 })
 
   app.get('/signup',(req,res)=>{

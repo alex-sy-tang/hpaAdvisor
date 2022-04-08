@@ -3,9 +3,9 @@
 <section id="more">
   <div class="container-fluid">
     <div class="row align-items-start">
-      <div class="image col-md-4">
+      <div class="image col-md-4 ">
 
-        <img src="<%=usrContent.imageUrl%>" alt="A random image">
+        <img class = "me-5"src="<%=usrContent.imageUrl%>" alt="A random image">
         <form class="" id = "bookmark" action="/more" method="post">
             <a type = "submit "onclick = "myFunction()" class = "save" name="button">
               <i class="save bi bi-bookmark-fill"></i>
@@ -14,7 +14,7 @@
         </form>
       </div>
       <div class="content col-md-8">
-        <div class="container">
+        <div class="container ms-5">
           <h5><%=usrContent.title%></h5>
           <p><%= usrContent.comment%></p>
           <br>

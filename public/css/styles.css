@@ -23,6 +23,8 @@ h1{
   font-size:1.5;
 }
 
+
+
 .contact-information{
   margin-top:3rem;
 }
@@ -178,10 +180,18 @@ h1{
   font-weight:lighter;
 }
 
+#community-area .filler, #your-posts .filler{
+  height:250px;
+  color:#DDDDDD;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+}
+
 
 #dashboard .row{
   width:20%;
-  margin:0 auto;
+  margin:-50px auto;
 }
 
 #dashboard .col-md-6{
@@ -191,7 +201,7 @@ h1{
 }
 
 #dashboard button{
-  border-radius:0;
+  border-radius:5px;
 }
 
 #more .container-fluid{
@@ -252,14 +262,14 @@ h1{
 }
 
 #portfolio .userImg{
-  width:50px;
-  height:50px;
+  width:150px;
+  height:150px;
   object-fit:cover;
 }
 
 
 
-#portfolio h3{
+/* #portfolio h3{
   margin-top:2rem;
 }
 
@@ -268,6 +278,10 @@ h1{
   font-family:sans-serif;
   font-weight: 100;
   margin:0 0 1rem 0;
+} */
+
+#portfolio h4{
+  color:grey;
 }
 
 #portfolio .row{
@@ -276,6 +290,6 @@ h1{
 }
 
 #your-posts .add{
-  border-radius:100%;
+  border-radius:10px;
   font-weight:bolder;
 }
