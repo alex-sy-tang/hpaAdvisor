@@ -336,13 +336,13 @@ app.post('/more',(req,res)=>{
     let imageUrl = ''
 
     if(! req.file){
-      imageUrl = '/css/image/food1.png'
+      imageUrl = '/css/image/education.png'
     }else{
       imageUrl = req.file.path.slice(6)
 
     }
     let id = new mongoose.Types.ObjectId();
-    const userContent = new Content({_id:id,user:req.user.username,title:countString(title,25),comment:comments,yourself:yourself,imageUrl:imageUrl})
+    const userContent = new Content({_id:id,user:req.user.username,abbr:countString(title,20),title:title,comment:comments,yourself:yourself,imageUrl:imageUrl})
     userContent.save()
     res.redirect('/')
   })
